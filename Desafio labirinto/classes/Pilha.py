@@ -16,15 +16,15 @@ class Pilha:
         no_removido = self.__topo
         self.__topo = self.__topo.get_prox()
         return no_removido
-
-    def exibeCaminho(self):
-     atual = self.__topo
-     caminho = []
-     while atual.get_pai()!=None:
-         caminho.append((atual.get_linha(), atual.get_coluna()))
-         atual = atual.get_pai()
     
-     return caminho  
+    def exibeCaminho(self):
+        atual = self.__topo
+        caminho = []
+        while atual.get_pai() is not None:
+            caminho.append((atual.get_linha(), atual.get_coluna()))
+            atual = atual.get_pai()
+       
+        return caminho
 
     def get_topo(self):
         return self.__topo
