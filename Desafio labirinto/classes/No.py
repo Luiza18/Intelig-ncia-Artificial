@@ -1,9 +1,23 @@
 class No:
-    def __init__(self, linha, coluna, pai=None):
+    def __init__(self, linha, coluna, pai=None, custo=0, heuristica=0):
         self.__linha = linha
         self.__coluna = coluna
         self.__prox = None
         self.__pai = pai
+        self.__custo = custo
+        self.__heuristica = heuristica
+
+    def get_heuristica(self):
+        return self.__heuristica
+
+    def set_heuristica(self, heuristica):
+        self.__heuristica = heuristica
+
+    def get_custo(self):
+        return self.__custo
+
+    def set_custo(self, custo):
+        self.__custo = custo
 
     def get_linha(self):
         return self.__linha
@@ -28,4 +42,3 @@ class No:
 
     def set_pai(self, pai):
         self.__pai = pai
-    
