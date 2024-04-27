@@ -8,7 +8,7 @@ LINHAS = 20
 COLUNAS = 20
 LIMITE_MUROS = 80
 INICIO = (0, 0)
-FIM = (LINHAS - 1, COLUNAS - 1)
+FIM = (19, 19)
 
 class Labirinto():
     def __init__(self) -> None:
@@ -78,7 +78,7 @@ class Labirinto():
                     visitados.adicionar(nova_linha, nova_coluna) 
 
                     if (nova_linha, nova_coluna) == FIM:  
-                        caminho = cp_pilha.exibeCaminho()
+                        caminho = cp_pilha.exibeCaminho(FIM)
                         return caminho, True
             
                    
@@ -111,7 +111,7 @@ class Labirinto():
                     visitados.adicionar(nova_linha, nova_coluna)
 
                     if (nova_linha, nova_coluna) == FIM:
-                        caminho = cp_fila.exibeCaminho()
+                        caminho = cp_fila.exibeCaminho(FIM)
                         return caminho, True
 
         return "Caminho não encontrado", False
@@ -131,15 +131,16 @@ class Labirinto():
             coluna_atual = no.get_coluna()
 
             if (linha_atual, coluna_atual) == FIM:
-                caminho = cp_fila.exibeCaminho()
+                caminho = cp_fila.exibeCaminho(FIM)
                 return caminho, True
 
             movimentos = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-
+            c = 1
             for movimento in movimentos:
                 nova_linha = linha_atual + movimento[0]
                 nova_coluna = coluna_atual + movimento[1]
-                novo_custo = no.get_custo() + 1
+                novo_custo = no.get_custo() + c
+                c = c *2
 
                 if self.verificar_posicao(nova_linha, nova_coluna) and not visitados.esta_na_lista(nova_linha,nova_coluna):
                     fila.enfileirar_com_custo(nova_linha, nova_coluna, no, novo_custo)
@@ -153,7 +154,6 @@ class Labirinto():
         cp_fila = Fila()
         visitados = ListaEncadeada()
 
-        # Adiciona o nó inicial na fila com custo zero
         fila.enfileirar_com_heuristica(INICIO[0], INICIO[1], None, 0, self.__heuristica(INICIO))
         cp_fila.enfileirar_com_heuristica(INICIO[0], INICIO[1], None, 0, self.__heuristica(INICIO))
         visitados.adicionar(INICIO[0], INICIO[1])
@@ -163,7 +163,7 @@ class Labirinto():
             linha_atual, coluna_atual = no.get_linha(), no.get_coluna()
 
             if (linha_atual, coluna_atual) == FIM:
-                caminho = cp_fila.exibeCaminho()
+                caminho = cp_fila.exibeCaminho(FIM)
                 return caminho, True
 
             movimentos = [(-1, 0), (1, 0), (0, -1), (0, 1)]
@@ -197,7 +197,7 @@ class Labirinto():
             linha_atual, coluna_atual = no.get_linha(), no.get_coluna()
 
             if (linha_atual, coluna_atual) == FIM:
-                caminho = cp_fila.exibeCaminho()
+                caminho = cp_fila.exibeCaminho(FIM)
                 return caminho, True
 
             movimentos = [(-1, 0), (1, 0), (0, -1), (0, 1)]
@@ -217,7 +217,15 @@ class Labirinto():
         return "Caminho não encontrado", False
 
     def __heuristica(self, posicao):
-        return abs(posicao[0] - FIM[0]) + abs(posicao[1] - FIM[1])
+        if posicao[0] > FIM[0]:
+            x = 1
+        elif posicao[0] <= FIM[0]:
+            x = 2
+        elif posicao[1] > FIM[1]:
+            x = 4
+        else:
+            x = 8
+        return x * abs(posicao[0] - FIM[0]) + abs(posicao[1] - FIM[1])
             
     def __construir_caminho(self, caminho_encontrado):
         mapa_caminho = deepcopy(self.__matriz)

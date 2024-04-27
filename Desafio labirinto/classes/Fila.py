@@ -32,8 +32,13 @@ class Fila:
             if novo_no.get_prox() is None:
                 self.__fim = novo_no
 
-    def exibeCaminho(self):
-        atual = self.__fim
+    def exibeCaminho(self, fim:tuple):
+        atual = self.__inicio
+        inicio = (atual.get_linha(), atual.get_coluna())
+        while fim != inicio:
+            atual = atual.get_prox()
+            inicio = (atual.get_linha(), atual.get_coluna())
+
         caminho = []
         while atual.get_pai() is not None:
             caminho.append((atual.get_linha(), atual.get_coluna()))
